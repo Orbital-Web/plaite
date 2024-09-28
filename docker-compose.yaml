@@ -1,0 +1,38 @@
+networks:
+  net:
+    driver: bridge
+
+services:
+  web:
+    image: plaite/web:latest
+    build:
+      context: ./web
+    env_file: ./web/.env
+    volumes:
+      - ./web:/app
+      - node-modules:/app/node_modules
+    depends_on:
+      api:
+        condition: service_started
+    ports:
+      - "80:80"
+    networks:
+      - net
+
+  api:
+    image: plaite/api:latest
+    build:
+      context: ./api
+    volumes:
+      - ./api:/app
+    env_file: ./api/.env
+    environment:
+      - ANONYMIZED_TELEMETRY=TRUE
+    ports:
+      - "8000:8000"
+    networks:
+      - net
+
+volumes:
+  node-modules:
+    driver: local

@@ -1,0 +1,39 @@
+{
+    "files.exclude": {
+        "**/__pycache__": true,
+        "**/.pytest_cache": true,
+        "**/.ruff_cache": true,
+        "**/**.egg-info": true,
+        "**/node_modules": true,
+        "**/.next": true,
+        "**/next-env.d.ts": true,
+    },
+    "[python]": {
+        "editor.defaultFormatter": "charliermarsh.ruff",
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+            "source.fixAll": "explicit",
+            "source.organizeImports": "explicit"
+        },
+        "editor.rulers": [
+            88,
+        ],
+    },
+    "autoDocstring.generateDocstringOnEnter": false,
+    "autoDocstring.docstringFormat": "google",
+    "[javascript][javascriptreact][typescript][typescriptreact]": {
+        "editor.tabSize": 2,
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.formatOnSave": true,
+        "prettier.tabWidth": 2,
+        "editor.rulers": [
+            80,
+        ],
+    },
+    "[html]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.formatOnSave": true,
+        "prettier.tabWidth": 4,
+    },
+    "sortcss.sortOnSave": true,
+}
