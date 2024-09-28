@@ -36,4 +36,5 @@
         "prettier.tabWidth": 4,
     },
     "sortcss.sortOnSave": true,
+    "cmake.sourceDirectory": "${workspaceFolder}/Users/alvintuo/Desktop/eecs/eecs201/adv-make",
 }

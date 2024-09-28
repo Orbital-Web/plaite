@@ -1,4 +1,4 @@
-# MHacks 24
+# Plaite
 
 ## Introduction
 
