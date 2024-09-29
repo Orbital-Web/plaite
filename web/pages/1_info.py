@@ -59,8 +59,10 @@ def get_nutrition_data(food_item, api_key):
 
 def display_nutrition_info(food_items, nutrition_results: dict, batch_size=2):
     nutrition_summary = {k: 0 for k in desired_nutrients}
-    for nutrition_result in nutrition_results and nutrition_results.values():
-        for nutrient, val in nutrition_result["nutrition"].items():
+    for nutrition_result in nutrition_results.values():
+        if nutrition_result is None:
+            continue
+        for nutrient, val in nutrition_result.get("nutrition", {}).items():
             nutrition_summary[nutrient] += val
 
     for i in range(0, len(food_items), batch_size):
