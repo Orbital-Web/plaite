@@ -31,6 +31,9 @@ def apply_custom_styles():
             background-color: #395E66;
             color: white;
         }
+        iframe {
+            background-color: #395E66;
+        }
         </style>
         """,
         unsafe_allow_html=True,
@@ -61,7 +64,7 @@ def get_nutrition_data(food_item, api_key):
 def display_nutrition_info(food_items, nutrition_results: dict, batch_size=2):
     nutrition_summary = {k: 0 for k in desired_nutrients}
     for nutrition_result in nutrition_results and nutrition_results.values():
-        for nutrient, val in nutrition_result["nutrition"].items():
+        for nutrient, val in nutrition_result.get("nutrition", {}).items():
             nutrition_summary[nutrient] += val
 
     with elements("style_mui_sx"):
@@ -70,10 +73,14 @@ def display_nutrition_info(food_items, nutrition_results: dict, batch_size=2):
                 "display": "flex",
                 "flexDirection": "row",
                 "overflowX": "auto",
-                "padding": "10px",
-                "gap": "10px",
+                "height": "500px",
+                "gap": "10vw",
                 "backgroundColor": "#395E66",
                 "borderRadius": "0",
+                "paddingTop": "5vh",
+                "paddingLeft": "10vw",
+                "scrollSnapType": "x mandatory",
+                "scrollPadding": "10vw",
             }
         ):
             with mui.Card(
@@ -82,44 +89,54 @@ def display_nutrition_info(food_items, nutrition_results: dict, batch_size=2):
                     "boxShadow": 1,
                     "borderRadius": 2,
                     "p": 2,
-                    "minWidth": 300,
+                    "minWidth": "70vw",
+                    "scrollSnapAlign": "start",
                 }
             ):
-                mui.Typography("Summary", variant="h3")
+                mui.Typography("Summary", variant="h5")
                 mui.Typography("infoinfo")
-            pass
-    # for i in range(0, len(food_items), batch_size):
-    #     cols = st.columns(min(batch_size, len(food_items) - i))
-    #     for index, food_item in enumerate(food_items[i : i + batch_size]):
-    #         with cols[index]:
-    #             if food_item in nutrition_results and nutrition_results[food_item]:
-    #                 st.write(f"**Food**: {nutrition_results[food_item]['description']}")
-    #                 st.write("**Nutrition Facts**:")
-    #                 for nutrient, val in nutrition_results[food_item][
-    #                     "nutrition"
-    #                 ].items():
-    #                     st.write(f"{nutrient}: {val} {desired_nutrients[nutrient][1]}")
-    #                 st.write("\n")
-    #             else:
-    #                 st.error(f"No data found for {food_item}.")
 
+            for food_item in food_items:
+                if nutrition_results.get(food_item):
+                    with mui.Card(
+                        sx={
+                            "bgcolor": "#ECBA82",
+                            "boxShadow": 1,
+                            "borderRadius": 2,
+                            "p": 2,
+                            "minWidth": "70vw",
+                            "scrollSnapAlign": "start",
+                        }
+                    ):
+                        mui.Typography(food_item, variant="h4")
+                        for nutrient, val in nutrition_results[food_item][
+                            "nutrition"
+                        ].items():
+                            mui.Typography(nutrient + ":", variant="h5")
+                            mui.Typography(f"{val} {desired_nutrients[nutrient][1]}")
 
-if st.sidebar.toggle("Developer Mode", False):
-    if st.sidebar.button("[DEBUG] Clear food.txt"):
-        with open("food.txt", "w") as ff:
-            ff.write("")
-        st.sidebar.success("File contents cleared!")
-
-    if st.sidebar.button("[DEBUG] Write to food.txt"):
-        with open("food.txt", "w") as file:
-            file.write("apple,pineapple")
-        st.sidebar.success("Written 'apple,pineapple' to food.txt!")
+            mui.Card(sx={"minWidth": "10vw", "backgroundColor": "transparent"})
 
 
 def main():
     apply_custom_styles()
 
     st.sidebar.image("./web/plAIte.png", use_column_width=True, caption="plAIte")
+    if st.sidebar.toggle("Developer Mode", False):
+        if st.sidebar.button("[DEBUG] Clear food.txt"):
+            with open("food.txt", "w") as ff:
+                ff.write("")
+            st.sidebar.success("File contents cleared!")
+
+        if st.sidebar.button("[DEBUG] Write to food.txt"):
+            with open("food.txt", "w") as file:
+                file.write("apple,pineapple")
+            st.sidebar.success("Written 'apple,pineapple' to food.txt!")
+
+        with open("food.txt", "r") as file:
+            food_contents = file.read()
+        st.sidebar.write("Food.txt contents:")
+        st.sidebar.write(food_contents)
 
     food_items = preload_food_items("food.txt")
 

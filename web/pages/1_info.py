@@ -79,22 +79,25 @@ def display_nutrition_info(food_items, nutrition_results: dict, batch_size=2):
                     st.error(f"No data found for {food_item}.")
 
 
-if st.sidebar.toggle("Developer Mode", False):
-    if st.sidebar.button("[DEBUG] Clear food.txt"):
-        with open("food.txt", "w") as ff:
-            ff.write("")
-        st.sidebar.success("File contents cleared!")
-
-    if st.sidebar.button("[DEBUG] Write to food.txt"):
-        with open("food.txt", "w") as file:
-            file.write("apple,pineapple")
-        st.sidebar.success("Written 'apple,pineapple' to food.txt!")
-
-
 def main():
     apply_custom_styles()
 
     st.sidebar.image("./web/plAIte.png", use_column_width=True, caption="plAIte")
+    if st.sidebar.toggle("Developer Mode", False):
+        if st.sidebar.button("[DEBUG] Clear food.txt"):
+            with open("food.txt", "w") as ff:
+                ff.write("")
+            st.sidebar.success("File contents cleared!")
+
+        if st.sidebar.button("[DEBUG] Write to food.txt"):
+            with open("food.txt", "w") as file:
+                file.write("apple,pineapple")
+            st.sidebar.success("Written 'apple,pineapple' to food.txt!")
+
+        with open("food.txt", "r") as file:
+            food_contents = file.read()
+        st.sidebar.write("Food.txt contents:")
+        st.sidebar.write(food_contents)
 
     food_items = preload_food_items("food.txt")
 

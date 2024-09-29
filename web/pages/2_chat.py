@@ -101,7 +101,7 @@ if st.sidebar.button("Clear chat"):
 
 st.sidebar.markdown(
     """
-    The plaite chatbot is your friendly pal to help you with your food queries.
+    NomNom Assistant is your friendly pal to help you with your food queries!
     """
 )
 

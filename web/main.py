@@ -52,7 +52,6 @@ if st.sidebar.toggle("Developer Mode", False):
             file.write("apple,pineapple")
         st.sidebar.success("Written 'apple,pineapple' to food.txt!")
 
-    # Put food.txt in the sidebar
     with open("food.txt", "r") as file:
         food_contents = file.read()
     st.sidebar.write("Food.txt contents:")
