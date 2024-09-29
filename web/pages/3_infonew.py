@@ -2,6 +2,7 @@ import os
 
 import requests
 import streamlit as st
+from streamlit_elements import elements, mui
 
 desired_nutrients = {
     "Energy": ("Energy", "KCAL"),
@@ -63,20 +64,44 @@ def display_nutrition_info(food_items, nutrition_results: dict, batch_size=2):
         for nutrient, val in nutrition_result["nutrition"].items():
             nutrition_summary[nutrient] += val
 
-    for i in range(0, len(food_items), batch_size):
-        cols = st.columns(min(batch_size, len(food_items) - i))
-        for index, food_item in enumerate(food_items[i : i + batch_size]):
-            with cols[index]:
-                if food_item in nutrition_results and nutrition_results[food_item]:
-                    st.write(f"**Food**: {nutrition_results[food_item]['description']}")
-                    st.write("**Nutrition Facts**:")
-                    for nutrient, val in nutrition_results[food_item][
-                        "nutrition"
-                    ].items():
-                        st.write(f"{nutrient}: {val} {desired_nutrients[nutrient][1]}")
-                    st.write("\n")
-                else:
-                    st.error(f"No data found for {food_item}.")
+    with elements("style_mui_sx"):
+        with mui.Box(
+            sx={
+                "display": "flex",
+                "flexDirection": "row",
+                "overflowX": "auto",
+                "padding": "10px",
+                "gap": "10px",
+                "backgroundColor": "#395E66",
+                "borderRadius": "0",
+            }
+        ):
+            with mui.Card(
+                sx={
+                    "bgcolor": "background.paper",
+                    "boxShadow": 1,
+                    "borderRadius": 2,
+                    "p": 2,
+                    "minWidth": 300,
+                }
+            ):
+                mui.Typography("Summary", variant="h3")
+                mui.Typography("infoinfo")
+            pass
+    # for i in range(0, len(food_items), batch_size):
+    #     cols = st.columns(min(batch_size, len(food_items) - i))
+    #     for index, food_item in enumerate(food_items[i : i + batch_size]):
+    #         with cols[index]:
+    #             if food_item in nutrition_results and nutrition_results[food_item]:
+    #                 st.write(f"**Food**: {nutrition_results[food_item]['description']}")
+    #                 st.write("**Nutrition Facts**:")
+    #                 for nutrient, val in nutrition_results[food_item][
+    #                     "nutrition"
+    #                 ].items():
+    #                     st.write(f"{nutrient}: {val} {desired_nutrients[nutrient][1]}")
+    #                 st.write("\n")
+    #             else:
+    #                 st.error(f"No data found for {food_item}.")
 
 
 if st.sidebar.toggle("Developer Mode", False):
